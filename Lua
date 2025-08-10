@@ -1,0 +1,101 @@
+-- Serviços Roblox
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+-- Key correta
+local keyCorreta = "1579"
+
+-- Criar GUI
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "KeyGui"
+screenGui.Parent = playerGui
+
+-- Fundo escuro semi-transparente
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 300, 0, 150)
+frame.Position = UDim2.new(0.5, -150, 0.5, -75)
+frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+frame.BackgroundTransparency = 0.3
+frame.Parent = screenGui
+
+-- Título
+local titulo = Instance.new("TextLabel")
+titulo.Text = "Digite a sua Key"
+titulo.Size = UDim2.new(1, 0, 0, 40)
+titulo.BackgroundTransparency = 1
+titulo.TextColor3 = Color3.new(1, 1, 1)
+titulo.Font = Enum.Font.SourceSansBold
+titulo.TextSize = 24
+titulo.Parent = frame
+
+-- Caixa de texto para digitar a Key
+local textBox = Instance.new("TextBox")
+textBox.PlaceholderText = "Digite a key aqui"
+textBox.Size = UDim2.new(1, -20, 0, 40)
+textBox.Position = UDim2.new(0, 10, 0, 50)
+textBox.Text = ""
+textBox.ClearTextOnFocus = false
+textBox.TextSize = 20
+textBox.Font = Enum.Font.SourceSans
+textBox.Parent = frame
+
+-- Label para mensagem
+local mensagem = Instance.new("TextLabel")
+mensagem.Size = UDim2.new(1, -20, 0, 30)
+mensagem.Position = UDim2.new(0, 10, 0, 95)
+mensagem.BackgroundTransparency = 1
+mensagem.TextColor3 = Color3.fromRGB(255, 100, 100)
+mensagem.Font = Enum.Font.SourceSansItalic
+mensagem.TextSize = 18
+mensagem.Text = ""
+mensagem.Parent = frame
+
+-- Botão Enviar
+local botaoEnviar = Instance.new("TextButton")
+botaoEnviar.Text = "Enviar"
+botaoEnviar.Size = UDim2.new(0.4, 0, 0, 30)
+botaoEnviar.Position = UDim2.new(0.05, 0, 0, 130)
+botaoEnviar.BackgroundColor3 = Color3.fromRGB(70, 130, 180)
+botaoEnviar.TextColor3 = Color3.new(1, 1, 1)
+botaoEnviar.Font = Enum.Font.SourceSansBold
+botaoEnviar.TextSize = 20
+botaoEnviar.Parent = frame
+
+-- Botão Copiar (vai copiar a key correta)
+local botaoCopiar = Instance.new("TextButton")
+botaoCopiar.Text = "Copiar Key"
+botaoCopiar.Size = UDim2.new(0.5, 0, 0, 30)
+botaoCopiar.Position = UDim2.new(0.55, 0, 0, 130)
+botaoCopiar.BackgroundColor3 = Color3.fromRGB(100, 200, 100)
+botaoCopiar.TextColor3 = Color3.new(1, 1, 1)
+botaoCopiar.Font = Enum.Font.SourceSansBold
+botaoCopiar.TextSize = 20
+botaoCopiar.Parent = frame
+
+-- Função para verificar a key
+local function verificarKey()
+    if textBox.Text == keyCorreta then
+        mensagem.TextColor3 = Color3.fromRGB(100, 255, 100)
+        mensagem.Text = "Key correta! Acesso liberado."
+        -- Aqui você pode liberar o script ou fechar o painel, etc
+        wait(1)
+        screenGui:Destroy()
+    else
+        mensagem.TextColor3 = Color3.fromRGB(255, 100, 100)
+        mensagem.Text = "Key incorreta! Tente novamente."
+    end
+end
+
+-- Função para copiar a key para a área de transferência
+local function copiarKey()
+    -- Isso funciona só se o Roblox permitir clipboard (na maioria dos casos só no Roblox Studio)
+    -- Caso não funcione no jogo, o botão pode ser só para mostrar a key
+    setclipboard(keyCorreta)
+    mensagem.TextColor3 = Color3.fromRGB(255, 255, 255)
+    mensagem.Text = "Key copiada para área de transferência!"
+end
+
+-- Eventos dos botões
+botaoEnviar.MouseButton1Click:Connect(verificarKey)
+botaoCopiar.MouseButton1Click:Connect(copiarKey)
